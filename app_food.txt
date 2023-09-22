@@ -1,0 +1,157 @@
+--TẠO DATABASE app_food
+CREATE DATABASE app_food;
+USE app_food;
+--TẠO BẢNG users
+CREATE TABLE users(user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,full_name varchar(100) NOT NULL,email varchar(100)NOT NULL,password varchar(100) NOT NULL);
+--TẠO BẢNG restaurant
+CREATE TABLE restaurant(res_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,res_name varchar(100) NOT NULL,image varchar(255) NOT NULL,description varchar(100) NOT NULL);
+--TẠO BẢNG food_type
+CREATE TABLE food_type(type_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,type_name varchar(100));
+--TẠO BẢNG food
+CREATE TABLE food(food_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,food_name varchar(100) NOT NULL,image varchar(100)NOT NULL,price FLOAT NOT NULL,description varchar(100) NOT NULL,type_id INT, FOREIGN KEY(type_id) REFERENCES food_type(type_id));
+--TẠO BẢNG sub_food
+CREATE TABLE sub_food(sub_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,sub_name varchar(100) NOT NULL,sub_price FLOAT NOT NULL,food_id INT,FOREIGN KEY(food_id) REFERENCES food(food_id));
+--TẠO BẢNG orders
+CREATE TABLE orders(user_id INT,
+FOREIGN KEY(user_id) REFERENCES user(user_id),
+food_id INT,
+FOREIGN KEY(food_id) REFERENCES food(food_id),
+amount INT NOT NULL,
+code varchar(100) NOT NULL,
+arr_sub_id varchar(100) NOT NULL);
+--TẠO BẢNG rate_res
+CREATE TABLE rate_res(user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id),res_id INT, FOREIGN KEY(res_id) REFERENCES restaurant(res_id),res_name VARCHAR(100)NOT NULL,image VARCHAR(100) NOT NULL,description VARCHAR(100) NOT NULL);
+--TẠO BẢNG like_res
+CREATE TABLE like_res(user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id),res_id INT, FOREIGN KEY(res_id) REFERENCES restaurant(res_id),date_like datetime NOT NULL);
+--THÊM DATA VÀO BẢNG user
+INSERT INTO users (full_name, email, password) VALUES
+('John Doe', 'johndoe@example.com', 'password1'),
+('Jane Smith', 'janesmith@example.com', 'password2'),
+('Alice Johnson', 'alicejohnson@example.com', 'password3'),
+('Bob Williams', 'bobwilliams@example.com', 'password4'),
+('Emily Davis', 'emilydavis@example.com', 'password5'),
+('Michael Brown', 'michaelbrown@example.com', 'password6'),
+('Sarah Wilson', 'sarahwilson@example.com', 'password7'),
+('David Lee', 'davidlee@example.com', 'password8'),
+('Olivia Martin', 'oliviamartin@example.com', 'password9'),
+('William Clark', 'williamclark@example.com', 'password10');
+--THÊM DATA VÀO BẢNG restaurant
+INSERT INTO restaurant (res_name, image, description) VALUES
+('Restaurant 1', 'restaurant1.jpg', 'A cozy place with a diverse menu.'),
+('Restaurant 2', 'restaurant2.jpg', 'Fine dining with a stunning view.'),
+('Restaurant 3', 'restaurant3.jpg', 'Family-friendly atmosphere and delicious food.'),
+('Restaurant 4', 'restaurant4.jpg', 'A taste of traditional cuisine.'),
+('Restaurant 5', 'restaurant5.jpg', 'Elegant dining with live music.'),
+('Restaurant 6', 'restaurant6.jpg', 'Fast and delicious for food on the go.'),
+('Restaurant 7', 'restaurant7.jpg', 'Authentic flavors from around the world.'),
+('Restaurant 8', 'restaurant8.jpg', 'Healthy and fresh ingredients for all.'),
+('Restaurant 9', 'restaurant9.jpg', 'Exquisite seafood and waterfront dining.'),
+('Restaurant 10', 'restaurant10.jpg', 'Artisanal dishes in a rustic setting.');
+--THÊM DATA VÀO BẢNG food_type
+INSERT INTO food_type (type_name) VALUES
+('Pasta'),
+('Chicken'),
+('Pizza'),
+('Sushi'),
+('Salad'),
+('Burger'),
+('Stir-Fry'),
+('Dessert'),
+('Seafood'),
+('Risotto');
+--THÊM DATA VÀO BẢNG food
+INSERT INTO food (food_name, image, price, description, type_id) VALUES
+('Spaghetti Carbonara', 'spaghetti_carbonara.jpg', 12.99, 'Classic Italian pasta with creamy sauce', 1),
+('Chicken Teriyaki', 'chicken_teriyaki.jpg', 14.99, 'Grilled chicken with teriyaki sauce', 2),
+('Margherita Pizza', 'margherita_pizza.jpg', 10.99, 'Traditional Italian pizza with tomato and mozzarella', 3),
+('Sushi Platter', 'sushi_platter.jpg', 18.99, 'Assorted sushi rolls and sashimi', 4),
+('Caesar Salad', 'caesar_salad.jpg', 8.99, 'Crisp romaine lettuce with Caesar dressing', 5),
+('Beef Burger', 'beef_burger.jpg', 9.99, 'Juicy beef patty with all the fixings', 6),
+('Vegetable Stir-Fry', 'vegetable_stir_fry.jpg', 11.99, 'Fresh veggies sautéed in a savory sauce', 7),
+('Chocolate Brownie', 'chocolate_brownie.jpg', 5.99, 'Warm chocolate brownie with ice cream', 8),
+('Grilled Salmon', 'grilled_salmon.jpg', 16.99, 'Fresh salmon fillet grilled to perfection', 9),
+('Mushroom Risotto', 'mushroom_risotto.jpg', 13.99, 'Creamy risotto with mushrooms and Parmesan', 10);
+--THÊM DATA VÀO BẢNG sub_food
+INSERT INTO sub_food (sub_name, sub_price, food_id) VALUES
+('Garlic Bread', 3.99, 1),
+('Miso Soup', 2.49, 4),
+('Caesar Salad', 4.99, 6),
+('Onion Rings', 4.49, 6),
+('French Fries', 3.99, 6),
+('Vegetable Spring Roll', 3.29, 7),
+('Cheesecake', 5.99, 8),
+('Creme Brulee', 6.49, 8),
+('Garlic Butter Shrimp', 8.99, 9),
+('Tiramisu', 6.99, 10);
+--THÊM DATA VÀO BẢNG orders
+INSERT INTO orders (user_id, food_id, amount, code, arr_sub_id) VALUES
+(1, 1, 2, 'ORDER123', '1,3'),
+(3, 3, 100, 'ORDER124', '2,4,6'),
+(9, 5, 33, 'ORDER125', '5'),
+(3, 2, 12, 'ORDER126', '8'),
+(7, 4, 2, 'ORDER127', '7,9'),
+(5, 6, 2, 'ORDER128', '10'),
+(3, 7, 11, 'ORDER129', '4,6'),
+(8, 9, 16, 'ORDER130', '3,5'),
+(2, 10, 3, 'ORDER131', '2,8'),
+(3, 8, 2, 'ORDER132', '1,9');
+--THÊM DATA VÀO BẢNG rate_res
+INSERT INTO rate_res (user_id, res_id, res_name, image, description) VALUES
+(1, 1, 'Restaurant 1', 'restaurant1.jpg', 'A cozy place with a diverse menu.'),
+(2, 2, 'Restaurant 2', 'restaurant2.jpg', 'Fine dining with a stunning view.'),
+(3, 3, 'Restaurant 3', 'restaurant3.jpg', 'Family-friendly atmosphere and delicious food.'),
+(10, 4, 'Restaurant 4', 'restaurant4.jpg', 'A taste of traditional cuisine.'),
+(5, 5, 'Restaurant 5', 'restaurant5.jpg', 'Elegant dining with live music.'),
+(6, 6, 'Restaurant 6', 'restaurant6.jpg', 'Fast and delicious for food on the go.'),
+(3, 7, 'Restaurant 7', 'restaurant7.jpg', 'Authentic flavors from around the world.'),
+(8, 8, 'Restaurant 8', 'restaurant8.jpg', 'Healthy and fresh ingredients for all.'),
+(1, 9, 'Restaurant 9', 'restaurant9.jpg', 'Exquisite seafood and waterfront dining.'),
+(9, 10, 'Restaurant 10', 'restaurant10.jpg', 'Artisanal dishes in a rustic setting.');
+--THÊM DATA ÀO BẢNG like_res
+INSERT INTO like_res (user_id, res_id, date_like) VALUES
+(1, 3, '2023-09-21 10:00:00'),
+(2, 6, '2023-09-21 11:15:00'),
+(6, 3, '2023-09-21 12:30:00'),
+(2, 4, '2023-09-21 13:45:00'),
+(5, 5, '2023-09-21 14:00:00'),
+(9, 6, '2023-09-21 15:15:00'),
+(8, 4, '2023-09-21 16:30:00'),
+(6, 8, '2023-09-21 17:45:00'),
+(9, 3, '2023-09-21 18:00:00'),
+(2, 1, '2023-09-21 10:15:00'),
+(9, 2, '2023-09-21 11:15:00'),
+(2, 7, '2023-09-21 12:15:00'),
+(3, 8, '2023-09-21 16:15:00'),
+(2, 3, '2023-09-21 20:15:00'),
+(1, 4, '2023-09-21 20:15:00'),
+(10, 3, '2023-09-21 20:15:00'),
+(3, 10, '2023-09-21 20:15:00'),
+(7, 9, '2023-09-21 21:15:00');
+--TÌM 5 NGƯỜI ĐÃ LIKE NHÀ HÀNG NHIỀU NHẤT
+SELECT users.user_id, users.full_name, COUNT(*) AS like_count
+FROM like_res
+INNER JOIN users ON like_res.user_id = users.user_id
+GROUP BY users.user_id, users.full_name
+ORDER BY like_count DESC
+LIMIT 5;
+--TÌM 2 NHÀ HÀNG CÓ LƯỢT LIKE NHIỀU NHẤT
+SELECT restaurant.res_id, restaurant.res_name, COUNT(*) AS like_count
+FROM like_res
+INNER JOIN restaurant ON like_res.res_id = restaurant.res_id
+GROUP BY restaurant.res_id, restaurant.res_name
+ORDER BY like_count DESC
+LIMIT 2;
+--TÌM NGƯỜI ĐÃ ĐẶT HÀNG NHIỀU NHẤT
+SELECT u.user_id, u.full_name, COUNT(o.user_id) AS total_orders
+FROM users u
+INNER JOIN orders o ON u.user_id = o.user_id
+GROUP BY u.user_id, u.full_name
+ORDER BY total_orders DESC
+LIMIT 1;
+--TÌM NGƯỜI DÙNG KHÔNG HOẠT ĐỘNG TRONG HỆ THỐNG(KHÔNG ĐẶT HÀNG, KHÔNG LIKE, KHÔNG ĐÁNH GIÁ NHÀ HÀNG)
+SELECT u.user_id, u.full_name
+FROM users u
+LEFT JOIN orders o ON u.user_id = o.user_id
+LEFT JOIN like_res lr ON u.user_id = lr.user_id
+LEFT JOIN rate_res rr ON u.user_id = rr.user_id
+WHERE o.user_id IS NULL AND lr.user_id IS NULL AND rr.user_id IS NULL;
