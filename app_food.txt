@@ -2,13 +2,13 @@
 CREATE DATABASE app_food;
 USE app_food;
 --TẠO BẢNG users
-CREATE TABLE users(user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,full_name varchar(100) NOT NULL,email varchar(100)NOT NULL,password varchar(100) NOT NULL);
+CREATE TABLE users(user_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,full_name varchar(100) NOT NULL,email varchar(100) NOT NULL,password varchar(100) NOT NULL);
 --TẠO BẢNG restaurant
 CREATE TABLE restaurant(res_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,res_name varchar(100) NOT NULL,image varchar(255) NOT NULL,description varchar(100) NOT NULL);
 --TẠO BẢNG food_type
 CREATE TABLE food_type(type_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,type_name varchar(100));
 --TẠO BẢNG food
-CREATE TABLE food(food_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,food_name varchar(100) NOT NULL,image varchar(100)NOT NULL,price FLOAT NOT NULL,description varchar(100) NOT NULL,type_id INT, FOREIGN KEY(type_id) REFERENCES food_type(type_id));
+CREATE TABLE food(food_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,food_name varchar(100) NOT NULL,image varchar(100) NOT NULL,price FLOAT NOT NULL,description varchar(100) NOT NULL,type_id INT, FOREIGN KEY(type_id) REFERENCES food_type(type_id));
 --TẠO BẢNG sub_food
 CREATE TABLE sub_food(sub_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,sub_name varchar(100) NOT NULL,sub_price FLOAT NOT NULL,food_id INT,FOREIGN KEY(food_id) REFERENCES food(food_id));
 --TẠO BẢNG orders
@@ -20,7 +20,7 @@ amount INT NOT NULL,
 code varchar(100) NOT NULL,
 arr_sub_id varchar(100) NOT NULL);
 --TẠO BẢNG rate_res
-CREATE TABLE rate_res(user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id),res_id INT, FOREIGN KEY(res_id) REFERENCES restaurant(res_id),res_name VARCHAR(100)NOT NULL,image VARCHAR(100) NOT NULL,description VARCHAR(100) NOT NULL);
+CREATE TABLE rate_res(user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id),res_id INT, FOREIGN KEY(res_id) REFERENCES restaurant(res_id),res_name VARCHAR(100) NOT NULL,image VARCHAR(100) NOT NULL,description VARCHAR(100) NOT NULL);
 --TẠO BẢNG like_res
 CREATE TABLE like_res(user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id),res_id INT, FOREIGN KEY(res_id) REFERENCES restaurant(res_id),date_like datetime NOT NULL);
 --THÊM DATA VÀO BẢNG user
